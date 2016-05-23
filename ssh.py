@@ -43,7 +43,7 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
                     except Exception:
                         if dev != 0:
                             print("[[DEV:] Unknown error in ssh.connect_enable_silent)]")
-                        raise UnknownError ("Unknown error ssh.connect_enable_silent")
+                        raise UnknownError ("Unknown error in ssh.connect_enable_silent")
                     else:
                         for ios_command in ios_commands:
                             if dev != 0:
@@ -60,8 +60,8 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
                             continue
                 except Exception:
                     if dev != 0:
-                        print("[[DEV:] Unknown error ssh.connect_enable_silent]")
-                    raise UnknownError ("Unknown error ssh.connect_enable_silent")
+                        print("[[DEV:] Unknown error in ssh.connect_enable_silent]")
+                    raise UnknownError ("Unknown error in ssh.connect_enable_silent")
                 else:
                     for ios_command in ios_commands:
                         if dev != 0:
