@@ -7,7 +7,7 @@ my first project is to write an exhaustive network mapping tool which when ready
 ssh.py:
 
 ssh.py is based on netmiko (so this will be necessary to be installed for it to work) which is wrapper around paramiko.
-for some reason in python 3 running on windows, I could not get paramiko itself to run more then one command before closing the SSH channel, this works from netmiko though.
+for some reason in python 3 running on windows, I could not get paramiko itself to run more than one command before closing the SSH channel, this works from netmiko though.
 
 the aim of ssh.py is to provide a platform to run cisco ios commands on for usage in projects such as network discovery, where failure and re-trying is expected.
 due to this, it is able to take more than one credential sets, which are defined in credentials.txt (will possibly try to encrypt it at some point) and also more then one command at the same time.
