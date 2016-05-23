@@ -1,5 +1,9 @@
 # cisco_network_automation
 
+these are my attempts at automating some of the task at my job (https://imgs.xkcd.com/comics/automation.png).
+my first project is to write an exhaustive network mapping tool which when ready should use all the tricks i personally use to discover a network. it's still work in progress and up untill now i have written the following modules:
+
+
 ssh.py:
 
 ssh.py is based on netmiko (so this will be necessary to be installed for it to work) which is wrapper around paramiko.
