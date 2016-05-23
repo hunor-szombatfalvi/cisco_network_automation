@@ -12,3 +12,8 @@ ssh.py:
 #the functions in ssh.py also raise their own errors to be further used in any project where ssh.py is incorporated
 
 #passing any function in ssh.py an optional parameter of "dev=1" will enabled status messages to be displayed as the functions are running, this is meant for debugging
+
+
+cisco_ios_parser.py
+
+CLI pasing is bad, mmk? but sometimes you need to do it. cisco_ios_parser.py contains a collection of parsers for differed cisco ios commands
