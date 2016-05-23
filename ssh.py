@@ -26,7 +26,7 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
                     ssh.enable()
                 except netmiko.ssh_exception.NetMikoAuthenticationException:
                     if dev != 0:
-                        print ("[[DEV:] Incorrect credentials")
+                        print ("[[DEV:] Incorrect credentials]")
                     continue
                 except netmiko.ssh_exception.NetMikoTimeoutException:
                     if dev != 0:
@@ -79,3 +79,34 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
         if dev != 0:
             print("[[DEV:] credentials file not in JSON format]")
     raise JsonIncorrectFormat ("Credentials file not in JSON format")
+    
+    
+def hostname_silent(ip_address,dev=0):
+    with open ("credentials.txt") as line:
+        line_1 = json.load(line)
+        for k,v in line_1.items():
+            router=(k,v)
+            try:
+                if dev != 0:
+                    print("[[DEV:] Trying Privileged EXEC credentials '", k, "']", sep="")
+                ssh = ConnectHandler(**router[1],device_type="cisco_ios",ip=ip_address)
+            except netmiko.ssh_exception.NetMikoAuthenticationException:
+                if dev != 0:
+                    print("[[DEV:] Incorrect credentials]")
+                continue
+            except netmiko.ssh_exception.NetMikoTimeoutException:
+                if dev != 0:
+                    print("[[DEV:] SSH not enabled (User EXEC timed out)]")
+                raise SSHnotEnabled("SSH not enabled on target device (" + ip_address + ")") from None
+            except Exception:
+                if dev != 0:
+                    print("[[DEV:] Unknown error in ssh.hostname_silent]")
+                raise UnknownError("Unknown error in ssh.hostname_silent")
+            else:
+                output = ssh.find_prompt()
+                if ('#') in output:
+                    (output_split,junk) = output.split('#')
+                else:
+                    (output_split, junk) = output.split('>')
+                ssh.disconnect()
+                return output_split
