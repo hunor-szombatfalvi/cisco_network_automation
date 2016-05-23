@@ -39,7 +39,7 @@ def port_channel(ip_address,dev=0):
             list_of_portchannels_json = {}
 
             for n in range(0,len(list_of_portchannels)-1):
-                if not list_of_portchannels[n][0] in list_of_portchannels_json:
+                if list_of_portchannels[n][0] not in list_of_portchannels_json:
                     list_of_portchannels_json[list_of_portchannels[n][0]] = {}
                     if list_of_portchannels[n][1] == "-":
                         list_of_portchannels_json[list_of_portchannels[n][0]]["protocol"] = "NONE"
@@ -47,11 +47,11 @@ def port_channel(ip_address,dev=0):
                         list_of_portchannels_json[list_of_portchannels[n][0]]["protocol"] = list_of_portchannels[n][1]
                     list_of_portchannels_json[list_of_portchannels[n][0]]["ports"] = list_of_portchannels[n][2]
             return list_of_portchannels_json
-        
+
         except ssh.SSHnotEnabled:
             print ("[[DEV:] Future: Raise error for different module or pass to Telnet")
             break
-            
+
         except Exception:
             print ("[[DEV:] General exception triggered in cisco.port_channel")
             continue
