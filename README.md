@@ -10,3 +10,5 @@ ssh.py:
 # the feature to take more than one command is geared towards syntax differences in IOS, IOS-XE and IOS-NX and is not meant to pass multiple different commands, but different versions of the same one.
 
 #the functions in ssh.py also raise their own errors to be further used in any project where ssh.py is incorporated
+
+#passing any function in ssh.py an optional parameter of "dev=1" will enabled status messages to be displayed as the functions are running, this is meant for debugging
