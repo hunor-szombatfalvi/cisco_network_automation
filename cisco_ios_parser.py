@@ -2,7 +2,7 @@ def port_channel(ip_address,dev=0):
     import ssh
     for retries in range(0,3):
         try:
-            show_port_channel_sum = ssh.connect_enable_silent('show etherchannel summary',"show port-channel summary",ip_address=ip_address,dev=1)
+            show_port_channel_sum = ssh.connect_enable_silent('show etherchannel summary',"show port-channel summary",ip_address=ip_address,dev=dev)
 
             # parses the output line by line, delimits variables and collects all of them in a list
             full_list = []
@@ -46,7 +46,12 @@ def port_channel(ip_address,dev=0):
                     else:
                         list_of_portchannels_json[list_of_portchannels[n][0]]["protocol"] = list_of_portchannels[n][1]
                     list_of_portchannels_json[list_of_portchannels[n][0]]["ports"] = list_of_portchannels[n][2]
-            return list_of_portchannels_json
+            if dev != 0 and list_of_portchannels_json != {}:
+                print("[[DEV:] Successful. Getting hostname]")
+
+            hostname = ssh.hostname_silent(ip_address=ip_address, dev=dev)
+            output = {hostname:list_of_portchannels_json}
+            return output
 
         except ssh.SSHnotEnabled:
             print ("[[DEV:] Future: Raise error for different module or pass to Telnet")
