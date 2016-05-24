@@ -11,8 +11,6 @@ def port_channel(ip_address,dev=0):
             # parses the output line by line, delimits variables and collects all of them in a list
             full_list = []
             for line in show_port_channel_sum.split('\n'):
-#                if "}" in line and "username" in line:
-#                    pref_cred = line
                 if len([character for character in line if character.isdigit()]) > 0 and "(" in line:
                     segmented_line = (' '.join(line.split(")")).split())
                     full_list += segmented_line
