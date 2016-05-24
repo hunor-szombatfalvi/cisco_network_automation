@@ -83,7 +83,7 @@ def cdp_neighbor(ip_address, dev=0):
         print("[[DEV:] Getting CDP neighbor information]")
     for retries in range(0, 3):
         try:
-            show_cdp_ne_de = ssh.connect_enable_silent('show cdp neighbors detail', ip_address=ip_address, dev=1)
+            show_cdp_ne_de = ssh.connect_enable_silent('show cdp neighbors detail', ip_address=ip_address, dev=dev)
             split_cdp = show_cdp_ne_de.split('\n')
             network_devices = {}
 
