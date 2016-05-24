@@ -68,8 +68,9 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
                                 print("[[DEV:] '", ios_command, "' incorrect syntax or requires enable mode]", sep="")
                             if "at '^' marker" not in output:
                                 ssh.disconnect()
-                                if dev != 0 and globals.pref_cred == {} or dev != 0 and globals.pref_cred != {} and try_credentials > 1:
-                                    print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
+                                if globals.pref_cred == {} or globals.pref_cred != {} and try_credentials > 1:
+                                    if dev != 0:
+                                        print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
                                     globals.pref_cred = v
                                 break
                         if "at '^' marker" not in output:
@@ -92,8 +93,9 @@ def connect_enable_silent(*ios_commands,ip_address,dev=0):
                             break
                     if "at '^' marker" in output:
                         raise IosSyntaxError
-                    if dev != 0 and globals.pref_cred == {} or dev != 0 and globals.pref_cred != {} and try_credentials > 1:
-                        print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
+                    if globals.pref_cred == {} or globals.pref_cred != {} and try_credentials > 1:
+                        if dev != 0:
+                            print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
                         globals.pref_cred = v
                     return output
     except json.decoder.JSONDecodeError:
@@ -138,9 +140,10 @@ def hostname_silent(ip_address,dev=0):
                     else:
                         (output_split, junk) = output.split('>')
                     ssh.disconnect()
-                    if dev != 0 and globals.pref_cred == {} or dev != 0 and globals.pref_cred != {} and try_credentials > 1:
-                        print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
-                        globals.pref_cred = v
+                    if globals.pref_cred == {} or globals.pref_cred != {} and try_credentials > 1:
+                                    if dev != 0:
+                                        print("[[DEV:] Saving '", k, "' as prefered credentials]", sep="")
+                                    globals.pref_cred = v
                     return output_split
     except json.decoder.JSONDecodeError:
         if dev != 0:
