@@ -27,5 +27,5 @@ The parsers also support the optional parameter of "dev=1" to enable status mess
 
 #roadmap
 
-encrypted credentials file and saved jobs
+encrypted credentials file and saved jobs. 
 having the option to run commands to neighboring routers from different source ips (ip where script is running, ip of devices in the netwokr for non-routeble ranges)
