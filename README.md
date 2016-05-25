@@ -4,8 +4,7 @@ these are my attempts at automating some of the task at my job (https://imgs.xkc
 my first project is to write an exhaustive network mapping tool which when ready should use all the tricks i personally use to discover a network. For further management APIs are the way to go but for initial discovery and capabilities assesment the plan is to use as much backwards compatibility as possible, which means CLI scraping using Telnet and SSH and SNMP.
 it's still work in progress and up untill now i have written the following modules:
 
-
-ssh.py:
+#ssh.py:
 
 ssh.py is based on netmiko (so this will be necessary to be installed for it to work) which is wrapper around paramiko.
 for some reason in python 3 running on windows, I could not get paramiko itself to run more than one command before closing the SSH channel, this works from netmiko though.
@@ -19,8 +18,14 @@ the functions in ssh.py also raise their own errors to be further used in any pr
 passing any function in ssh.py an optional parameter of "dev=1" will enabled status messages to be displayed as the functions are running, this is meant for debugging.
 
 
-cisco_ios_parser.py
+#cisco_ios_parser.py
 
 CLI parsing is bad, mmk? but sometimes you need to do it. cisco_ios_parser.py contains a collection of parsers for differed cisco ios commands.
 
-the parsers also support the optional parameter of "dev=1" to enable status messages.
+The parsers also support the optional parameter of "dev=1" to enable status messages.
+
+
+#roadmap
+
+encrypted credentials file and saved jobs
+having the option to run commands to neighboring routers from different source ips (ip where script is running, ip of devices in the netwokr for non-routeble ranges)
