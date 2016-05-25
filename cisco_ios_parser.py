@@ -1,5 +1,4 @@
 def port_channel(ip_address,dev=0):
-    global list_of_portchannels_json
     import time
     import ssh
     if dev != 0:
@@ -82,6 +81,7 @@ def hostname(ip_address, dev=0):
 
 
 def cdp_neighbor(ip_address, dev=0):
+    import time
     import ssh
     if dev != 0:
         print("[[DEV:] Getting CDP neighbor information]")
@@ -150,4 +150,5 @@ def cdp_neighbor(ip_address, dev=0):
 
         except Exception:
             print("[[DEV:] General exception triggered in cisco.cdp_neighbor")
+            time.sleep(3)
             continue
