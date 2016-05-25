@@ -1,12 +1,12 @@
 def port_channel(ip_address,dev=0):
-
     global list_of_portchannels_json
+    import time
     import ssh
     if dev != 0:
         print("[[DEV:] Getting port-channel information]")
     for retries in range(0,3):
         try:
-            show_port_channel_sum = ssh.connect_enable_silent('show etherchannel summary',"show port-channel summary",ip_address=ip_address,dev=dev)
+            show_port_channel_sum = ssh.connect_silent('show etherchannel summary',"show port-channel summary",ip_address=ip_address,dev=dev)
 
             # parses the output line by line, delimits variables and collects all of them in a list
             full_list = []
@@ -50,22 +50,25 @@ def port_channel(ip_address,dev=0):
                     else:
                         list_of_portchannels_json[list_of_portchannels[n][0]]["protocol"] = list_of_portchannels[n][1]
                     list_of_portchannels_json[list_of_portchannels[n][0]]["ports"] = list_of_portchannels[n][2]
-            break
-
+            return list_of_portchannels_json
         except ssh.SSHnotEnabled:
             print ("[[DEV:] Future: Raise error for different module or pass to Telnet")
             break
 
         except Exception:
             print ("[[DEV:] General exception triggered in cisco.port_channel")
+            time.sleep(3)
             continue
 
+
+def hostname(ip_address, dev=0):
+    import time
+    import ssh
     if dev != 0:
         print("[[DEV:] Getting hostname]")
     for retries in range(0, 3):
         try:
-            hostname = ssh.hostname_silent(ip_address=ip_address, dev=dev)
-            output = {hostname: list_of_portchannels_json}
+            output = ssh.hostname_silent(ip_address=ip_address, dev=dev)
             return output
 
         except ssh.SSHnotEnabled:
@@ -73,7 +76,8 @@ def port_channel(ip_address,dev=0):
             break
 
         except Exception:
-            print ("[[DEV:] General exception triggered in cisco.port_channel")
+            print ("[[DEV:] General exception triggered in cisco.hostname")
+            time.sleep(3)
             continue
 
 
@@ -83,7 +87,7 @@ def cdp_neighbor(ip_address, dev=0):
         print("[[DEV:] Getting CDP neighbor information]")
     for retries in range(0, 3):
         try:
-            show_cdp_ne_de = ssh.connect_enable_silent('show cdp neighbors detail', ip_address=ip_address, dev=dev)
+            show_cdp_ne_de = ssh.connect_silent('show cdp neighbors detail', ip_address=ip_address, dev=dev)
             split_cdp = show_cdp_ne_de.split('\n')
             network_devices = {}
 
@@ -127,6 +131,17 @@ def cdp_neighbor(ip_address, dev=0):
                         device_type = 'unknown'
                     network_devices[hostname]['model'] = model
                     network_devices[hostname]['device_type'] = device_type
+
+                if "outgoing port" in line:
+                    (remote, local) = line.split(",")
+                    (junk, local) = local.split(":")
+                    (junk, remote) = remote.split(":")
+                    if "/" in local:
+                        local = (''.join([character for character in local if character.isdigit() or character == "/"]))
+                    if "/" in remote:
+                        remote = (''.join([character for character in remote if character.isdigit() or character == "/"]))
+                    network_devices[hostname][local] = remote
+
             return network_devices
 
         except ssh.SSHnotEnabled:
@@ -134,5 +149,5 @@ def cdp_neighbor(ip_address, dev=0):
             break
 
         except Exception:
-            print("[[DEV:] General exception triggered in cisco.port_channel")
+            print("[[DEV:] General exception triggered in cisco.cdp_neighbor")
             continue
