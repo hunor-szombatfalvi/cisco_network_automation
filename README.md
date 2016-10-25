@@ -4,6 +4,8 @@ these are my attempts at automating some of the task at my job (https://imgs.xkc
 my first project is to write an exhaustive network mapping tool which when ready should use all the tricks i personally use to discover a network. For further management APIs are the way to go but for initial discovery and capabilities assesment the plan is to use as much backwards compatibility as possible, which means CLI scraping using Telnet and SSH and SNMP.
 it's still work in progress and up untill now i have written the following modules:
 
+update: written a few extra bits of code that do different things around network automation, collecting them all in here. not all pieces fit togather
+
 #ssh.py:
 
 ssh.py is based on netmiko (so this will be necessary to be installed for it to work) which is wrapper around paramiko.
@@ -25,7 +27,16 @@ CLI parsing is bad, mmk? but sometimes you need to do it. cisco_ios_parser.py co
 The parsers also support the optional parameter of "dev=1" to enable status messages.
 
 
+#apic.py
+
+a modified version of some code I've found on the cisco dev-net zone to do REST calls to APIC-EM, adapted to be called as a function and with a few minor tweaks
+
+
+
 #roadmap
 
 encrypted credentials file and saved jobs. 
 having the option to run commands to neighboring routers from different source ips (ip where script is running, ip of neighbor for possible non-routeble ranges)
+
+
+
