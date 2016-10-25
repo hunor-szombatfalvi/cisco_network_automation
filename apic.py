@@ -1,3 +1,6 @@
+#this file is just a modification of an example script to interact with APIC-EM available in the cisco dev-net zone, 
+#adapted to be used as a function and with some slight modifications
+
 import requests
 import json
 import sys
