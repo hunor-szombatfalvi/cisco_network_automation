@@ -32,6 +32,15 @@ The parsers also support the optional parameter of "dev=1" to enable status mess
 a modified version of some code I've found on the cisco dev-net zone to do REST calls to APIC-EM, adapted to be called as a function and with a few minor tweaks
 
 
+#parse_apic.py
+
+a collection of functions that at the moment are capable of taking input either from APIC-EM's API that returns the running config, either from the output of running a command on all nodes from Solarwinds and parse it.
+
+going to keep adding functionality as the need arrises. at the moment it can find all the network commands and aggregate-addresses from BGP, calculate if there are any subnets left over in the aggregate-address once you subtracted all the networks and print this to a CSV file.
+it can also compare all networks and undeclared subnets in every permutation to figure out if something was declared on two different routers.
+
+now with progress bars.
+
 
 #roadmap
 
