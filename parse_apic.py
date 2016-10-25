@@ -54,14 +54,14 @@ def scrap_bgp(input):                                                           
          re.findall(r'aggregate-address \d+\.\d+\.\d+\.\d+ \d+\.\d+\.\d+\.\d+', input)]                                 # within this section find all aggregate-address commands
     a_cidr = net2cidr(a)                                                                                                # save a cidr version of all aggregate-address commands
     u = subtract_subnet(a_cidr, n_cidr)                                                                                 # subtract all network commands from aggregate-address, save remaining
-    if not u:
+    if not u:                                                                                                           # would sometimes return None
         u = []
 
     return {'hostname':h, 'networks':n, 'networks_cidr':n_cidr, 'a_addresses':a, 'a_addresses_cidr':a_cidr,
             'unallocated':u}
 
 
-def bgp_net_agg_unaloc(input, output='bgp_net_agg_unaloc.csv'):                                                                                          # creates a CSV file from BGP data found on routers
+def bgp_net_agg_unaloc(input, output='bgp_net_agg_unaloc.csv'):                                                         # creates a CSV file from BGP data found on routers
     with open(output, 'a', newline='', encoding='utf-8') as f:
         fieldnames = ['hostname', 'network', 'aggregate-address', 'undeclared subnets']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -92,21 +92,21 @@ def bgp_duplicate_networks(input, output='overlap.csv'):                        
 
         for i in tqdm.tqdm(input[1:], desc='Creating list of all declared networks'):
             all_networks += [[scrap_bgp(i)['hostname'], [netaddr.IPSet([n]) for n in scrap_bgp(i)['networks_cidr']],
-                              [netaddr.IPSet([n]) for n in scrap_bgp(i)['unallocated'] if scrap_bgp(i)['unallocated']]]]
+                              [netaddr.IPSet([n]) for n in scrap_bgp(i)['unallocated']]]]
         for n_1_pr in tqdm.tqdm(all_networks, desc='Comparing all networks and looking for duplicates and inclusions'):
             for n_1 in n_1_pr[1]:
                 for n_2_pr in all_networks:
                     for n_2 in n_2_pr[1]:
-                        if n_1.issubset(n_2) or n_2.issubset(n_1):
+                        if n_1.issubset(n_2):
                             if re.search(r'\w{10}', str(n_1_pr[0]), re.IGNORECASE).group(0) != re.search(r'\w{10}', str(n_2_pr[0]), re.IGNORECASE).group(0):
                                 writer.writerow({'Router': n_1_pr[0], 'Subnet': strip_ipset(n_1), 'Overlap Router': n_2_pr[0], 'Overlap Subnet': strip_ipset(n_2)})
                     for unallocated in n_2_pr[2]:
-                        if n_1.issubset(unallocated) or unallocated.issubset(n_1):
+                        if unallocated.issubset(n_1):
                             if re.search(r'\w{10}', str(n_1_pr[0]), re.IGNORECASE).group(0) != re.search(r'\w{10}', str(n_2_pr[0]), re.IGNORECASE).group(0):
                                 writer.writerow({'Router': n_1_pr[0], 'Subnet': strip_ipset(n_1), 'Overlap Router': n_2_pr[0], 'Overlap Unallocated': strip_ipset(unallocated)})
 
 
-input = solarwinds_file('solarwinds_output_apac.txt')
+input = solarwinds_file('solarwinds_output')
 #input = parsed_apic_show_run()
 bgp_net_agg_unaloc(input)
 bgp_duplicate_networks(input)
